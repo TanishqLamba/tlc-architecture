@@ -21,7 +21,7 @@ app.post('/api/inquiry', async (req, res) => {
         service: 'gmail', 
         auth: {
             user: 'tanishqlamba11@gmail.com', 
-            pass: 'odbe yadt jguy pbub' // Active 16-character App Password
+            pass: 'odbeyadtjguypbub' // Active 16-character App Password
         }
     });
 
