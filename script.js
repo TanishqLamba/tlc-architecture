@@ -58,7 +58,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ==========================================================================
-       4. INTERSECTION TELEMETRY METRIC MONITORING & PROGRESS METRICS
+       4. RESTORED PORTFOLIO SLIDER TRANSLATION CONTROLS
+       ========================================================================== */
+    const sliderTrack = document.getElementById("sliderTrack");
+    const slidePrev = document.getElementById("slidePrev");
+    const slideNext = document.getElementById("slideNext");
+    
+    if (sliderTrack && slidePrev && slideNext) {
+        let currentPosition = 0;
+        
+        // Fetch real-time width profiles dynamically for accurate navigation steps
+        const getStepWidth = () => {
+            const slideItem = document.querySelector(".project-slide-item");
+            return slideItem ? slideItem.offsetWidth + 30 : 410; // Card width + gap margins
+        };
+
+        slideNext.addEventListener("click", () => {
+            const trackWidth = sliderTrack.scrollWidth;
+            const containerWidth = sliderTrack.parentElement.offsetWidth;
+            const maxScroll = -(trackWidth - containerWidth);
+            
+            currentPosition -= getStepWidth();
+            if (currentPosition < maxScroll) {
+                currentPosition = maxScroll; // Lock boundary to avoid empty margins
+            }
+            sliderTrack.style.transform = `translateX(${currentPosition}px)`;
+        });
+
+        slidePrev.addEventListener("click", () => {
+            currentPosition += getStepWidth();
+            if (currentPosition > 0) {
+                currentPosition = 0; // Prevent scrolling behind index card 1
+            }
+            sliderTrack.style.transform = `translateX(${currentPosition}px)`;
+        });
+    }
+
+    /* ==========================================================================
+       5. INTERSECTION TELEMETRY METRIC MONITORING & PROGRESS METRICS
        ========================================================================== */
     const revealTargets = document.querySelectorAll(".id-reveal");
     
@@ -69,9 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const percentageText = node.querySelector(".metric-percentage");
             const targetVal = parseInt(percentageText.getAttribute("data-target"), 10);
             
-            if (fillElement) {
-                fillElement.style.width = targetVal + "%";
-            }
+            if (fillElement) fillElement.style.width = targetVal + "%";
             
             if (percentageText) {
                 let currentVal = 0;
@@ -101,40 +136,33 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const revealObserver = new IntersectionObserver(revealCallback, {
-        root: null,
-        threshold: 0.10,
-        rootMargin: "0px 0px -40px 0px"
+        root: null, threshold: 0.10, rootMargin: "0px 0px -40px 0px"
     });
 
     revealTargets.forEach(target => revealObserver.observe(target));
 
     /* ==========================================================================
-       5. 3D MOUSE PARALLAX FRAME ROTATION ENGINE
+       6. 3D MOUSE PARALLAX FRAME ROTATION ENGINE
        ========================================================================== */
-    const caseNodes = document.querySelectorAll(".editorial-case-node");
-
+    const caseNodes = document.querySelectorAll(".project-slide-item");
     caseNodes.forEach(node => {
         node.addEventListener("mousemove", (e) => {
             const rect = node.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            
             const midX = rect.width / 2;
             const midY = rect.height / 2;
-            
             const tiltX = ((y - midY) / midY) * 4;
             const tiltY = ((midX - x) / midX) * 4;
-
             node.style.transform = `perspective(1200px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.005, 1.005, 1.005)`;
         });
-
         node.addEventListener("mouseleave", () => {
             node.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
         });
     });
 
     /* ==========================================================================
-       6. SECURE ASYNC MAIL TRANSMISSION BRIDGE
+       7. SECURE ASYNC MAIL TRANSMISSION BRIDGE
        ========================================================================== */
     const contactForm = document.getElementById("contactForm");
     if (contactForm) {
@@ -153,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             try {
-                // Sends inquiry data seamlessly through relative active server environment paths
                 const response = await fetch("/api/inquiry", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -177,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* ==========================================================================
-       7. NAV ACTIVE STATE MIGRATION MONITOR
+       8. NAV ACTIVE STATE MIGRATION MONITOR
        ========================================================================== */
     const menuLinks = document.querySelectorAll(".nav-link");
     menuLinks.forEach(link => {

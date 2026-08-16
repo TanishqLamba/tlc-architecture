@@ -21,7 +21,7 @@ app.post('/api/inquiry', async (req, res) => {
         service: 'gmail', 
         auth: {
             user: 'tanishqlamba11@gmail.com', 
-            pass: 'odbeyadtjguypbub' // Active 16-character App Password
+            pass: 'odbeyadtjguypbub' // Your active, secure 16-character cryptographic string
         }
     });
 
@@ -41,7 +41,7 @@ app.post('/api/inquiry', async (req, res) => {
     }
 });
 
-// FIXED FOR NODE v24: Static directory routing fallback mapping
+// Static directory routing fallback mapping to handle web navigation paths smoothly
 app.use((req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
